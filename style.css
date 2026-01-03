@@ -8,17 +8,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden; /* 防止捲動 */
+    min-height: 100vh; /* 改為 min-height 以適應手機捲動 */
 }
 
 .game-container {
     position: relative;
-    width: 800px;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 10px;
+    box-sizing: border-box;
     text-align: center;
 }
 
-/* 畫布：霓虹發光邊框 */
+/* 畫布：霓虹發光邊框，響應式縮放 */
 canvas {
     background: radial-gradient(circle, #1a1a2e 0%, #000000 100%);
     border: 3px solid #00d2ff;
@@ -26,14 +28,16 @@ canvas {
     box-shadow: 0 0 25px rgba(0, 210, 255, 0.4);
     display: block;
     margin: 0 auto;
+    max-width: 100%;
+    height: auto;
 }
 
 /* HUD (分數與生命) */
 .hud {
     display: flex;
     justify-content: space-between;
-    padding: 10px 20px;
-    font-size: 1.2rem;
+    padding: 10px 5px;
+    font-size: 1.1rem;
     font-weight: bold;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
@@ -57,26 +61,29 @@ canvas {
 input[type=range] {
     width: 60%;
     cursor: pointer;
-    accent-color: #00d2ff; /* 滑桿顏色 */
+    accent-color: #00d2ff;
 }
 
 .math-display {
     font-family: 'Courier New', monospace;
-    color: #ffd700; /* 金黃色 */
+    color: #ffd700;
     margin-top: 10px;
     font-size: 1.1rem;
 }
 
-.highlight-a { color: #00ffaa; font-weight: bold; } /* 振幅顏色 */
-.highlight-b { color: #ff0055; font-weight: bold; } /* 頻率顏色 */
+.highlight-a { color: #00ffaa; font-weight: bold; }
+.highlight-b { color: #ff0055; font-weight: bold; }
 
-/* 遮罩層 (開始畫面/Game Over) */
+/* 遮罩層 */
 .overlay {
     position: absolute;
-    top: 50px; /* 對齊 Canvas */
+    top: 50px; /* 約等於 HUD 高度 */
     left: 0;
+    right: 0;
+    margin: auto;
     width: 100%;
-    height: 450px; /* 跟 Canvas 一樣高 */
+    max-width: 800px;
+    height: 450px; /* 預設 Canvas 高度 */
     background: rgba(0, 0, 0, 0.85);
     display: flex;
     flex-direction: column;
@@ -86,10 +93,10 @@ input[type=range] {
     z-index: 10;
 }
 
-h1 { font-size: 3rem; margin: 0; color: #00d2ff; text-shadow: 0 0 10px #00d2ff; }
-p { font-size: 1.2rem; color: #ccc; }
+h1 { font-size: 2.5rem; margin: 0; color: #00d2ff; text-shadow: 0 0 10px #00d2ff; text-align: center; }
+p { font-size: 1rem; color: #ccc; text-align: center; padding: 0 20px;}
 
-button {
+button#startBtn {
     padding: 15px 40px;
     font-size: 1.5rem;
     background: linear-gradient(45deg, #ff0055, #ff5500);
@@ -99,6 +106,52 @@ button {
     cursor: pointer;
     transition: transform 0.2s;
     box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+    margin-top: 20px;
+}
+button#startBtn:hover { transform: scale(1.1); }
+
+/* --- 手機版專用樣式 --- */
+.mobile-controls {
+    display: none; /* 電腦版隱藏 */
+    margin: 15px 0;
+    gap: 10px;
+    justify-content: space-between;
 }
 
-button:hover { transform: scale(1.1); }
+.d-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid #00d2ff;
+    color: white;
+    padding: 15px 0;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    touch-action: manipulation;
+    flex: 1;
+    text-shadow: 0 0 3px black;
+}
+.d-btn:active { background: rgba(0, 210, 255, 0.4); transform: scale(0.95); }
+
+.d-pad-vertical, .d-pad-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 48%;
+}
+
+@media (max-width: 768px) {
+    body {
+        display: block;
+        padding-top: 10px;
+        overflow-y: auto;
+    }
+    .mobile-controls { display: flex; }
+    .overlay { 
+        height: 0; 
+        min-height: 100%; 
+        top: 0; 
+        position: fixed; 
+        border-radius: 0;
+    }
+    h1 { font-size: 2rem; }
+}
