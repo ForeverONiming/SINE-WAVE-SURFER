@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正弦波衝浪手 Sine Wave Surfer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="hud">
+            <div class="score-board">
+                <span>SCORE: <b id="scoreVal">0</b></span>
+                <span style="margin-left: 15px; color: #ff00ff;">BEST: <b id="highScoreVal">0</b></span>
+                <span style="margin-left: 15px;">LEVEL: <b id="levelVal">1</b></span>
+            </div>
+            <div class="lives">
+                生命: <span id="livesVal">❤️❤️❤️</span>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas" width="800" height="450"></canvas>
+
+        <div id="overlay" class="overlay">
+            <h1 id="overlayTitle">Sine Wave Surfer</h1>
+            <p id="overlayDesc">調整振幅與頻率，躲避紅色障礙，收集黃色能量！</p>
+            <button id="startBtn">開始衝浪 (Start Game)</button>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>🌊 浪高 (振幅 A): <span id="displayA">50</span></label>
+                <input type="range" id="sliderA" min="10" max="180" value="50">
+            </div>
+            
+            <div class="control-group">
+                <label>⚡ 浪急 (頻率 B): <span id="displayB">0.02</span></label>
+                <input type="range" id="sliderB" min="10" max="100" value="20">
+            </div>
+
+            <div class="control-group">
+                <label>🔊 音量 (Volume): <span id="displayVol">50%</span></label>
+                <input type="range" id="sliderVol" min="0" max="100" value="50" style="accent-color: #00ff00;">
+            </div>
+
+            <div class="math-display">
+                y = <span class="highlight-a">A</span> · sin(<span class="highlight-b">B</span> · x)
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgm" src="bgm.mp3" loop></audio>
+    <audio id="sfx-get" src="get.mp3"></audio>
+    <audio id="sfx-crash" src="crash.mp3"></audio>
+    
+    <script src="game.js"></script>
+</body>
+</html>
